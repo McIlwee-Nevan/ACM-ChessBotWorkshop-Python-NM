@@ -35,7 +35,7 @@ class Bot:
         }
     
     def getBestMove(self):
-        best_move, best_value = self.search(1)
+        best_move, best_value = self.search(1, float("-inf"), float("inf"))
         print(best_move, best_value)
         return best_move
 
@@ -49,7 +49,7 @@ class Bot:
         score += (
             (0.001 * random.random()) # ensure bot doesn't play exact same moves in each scenario - less predictable
         )
-        
+
         return score
 
     def evalSquareValue(self, square):
@@ -60,7 +60,7 @@ class Bot:
         return 0
 
     # Recursive search function
-    def search(self, depth):
+    def search(self, depth, alpha, beta):
         if depth == self.max_depth or self.Board.legal_moves.count() == 0:
             return None, self.evaluate()
         
@@ -73,11 +73,17 @@ class Bot:
             for move in self.Board.legal_moves:
                 self.Board.push(move)
 
-                _, value_candidate = self.search(depth + 1)
+                _, value_candidate = self.search(depth + 1, alpha, beta)
 
                 if value_candidate > best_value:
-                        best_value = value_candidate
-                        best_move = move
+                    best_value = value_candidate
+                    best_move = move
+
+                if best_value > beta:
+                    self.Board.pop()
+                    break
+                
+                alpha = max(alpha, best_value)
 
                 self.Board.pop()
             
@@ -90,12 +96,18 @@ class Bot:
             for move in self.Board.legal_moves:
                 self.Board.push(move)
 
-                _, value_candidate = self.search(depth + 1)
+                _, value_candidate = self.search(depth + 1, alpha, beta)
 
                 if value_candidate < best_value:
-                        best_value = value_candidate
-                        best_move = move
-
+                    best_value = value_candidate
+                    best_move = move
+                
+                if best_value < alpha:
+                    self.Board.pop()
+                    break
+                
+                beta = min(beta, best_value)
+                
                 self.Board.pop()
             
             return best_move, best_value
