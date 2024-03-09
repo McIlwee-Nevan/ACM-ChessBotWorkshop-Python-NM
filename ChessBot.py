@@ -46,6 +46,10 @@ class Bot:
         for i in range(64):
             score += self.evalSquareValue(ch.SQUARES[i])
 
+        score += (
+            (0.001 * random.random()) # ensure bot doesn't play exact same moves in each scenario - less predictable
+        )
+        
         return score
 
     def evalSquareValue(self, square):
