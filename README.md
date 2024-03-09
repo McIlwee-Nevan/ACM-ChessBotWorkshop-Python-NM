@@ -1,5 +1,7 @@
 # ACM Chess Bot Workshop
 
+Forked from ACM-ChessBotWorkshop-Python repo by Marlo Ong
+
 Forked from ChessEngine repo by Dereck Piche
 
 ## Credits
