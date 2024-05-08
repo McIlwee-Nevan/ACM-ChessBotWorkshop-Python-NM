@@ -39,3 +39,15 @@ jobs:
           path: cov.xml
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
+      - name: Build the app
+        run: |
+          pip install pyinstaller
+          pyinstaller --onefile src/Game.py
+          cp -r images dist/images
+        
+      - name: Upload the app
+        uses: actions/upload-artifact@v4
+        with:
+          name: app
+          path: dist/
+
