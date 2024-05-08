@@ -1,4 +1,7 @@
-import src.ChessBot as cb
+if __name__ == "__main__":
+    import ChessBot as cb
+else:
+    import src.ChessBot as cb
 import chess as ch
 import pygame
 from pygame.locals import *
